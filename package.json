@@ -8,7 +8,7 @@
         "dev": "cross-env BABEL_ENV=development NODE_ENV=development npx webpack-dev-server --inline --hot",
         "build:prod": "cross-env BABEL_ENV=production NODE_ENV=production npx webpack -p --progress --colors --display minimal",
         "lint:js": "npx eslint --cache --cache-location '.cache/eslintcache' --quiet './src/**/*.js' './src/**/*.jsx'",
-		"lint:css": "npx stylelint 'src/**/*.css' 'src/**/*.less' --cache --cache-location '.cache/stylelintcache' --syntax less"
+        "lint:css": "npx stylelint 'src/**/*.css' 'src/**/*.less' --cache --cache-location '.cache/stylelintcache' --syntax less --fix"
     },
     "dependencies": {
         "babel-runtime": "^6.26.0",
@@ -56,6 +56,7 @@
         "less": "^3.8.0",
         "less-loader": "^4.1.0",
         "path": "^0.12.7",
+        "postcss-css-variables": "^0.9.0",
         "postcss-loader": "^2.1.6",
         "postcss-short": "^4.1.0",
         "pre-commit": "^1.2.2",
@@ -66,6 +67,8 @@
         "style-loader": "^0.21.0",
         "stylelint": "^9.4.0",
         "stylelint-config-prettier": "^3.3.0",
+        "stylelint-config-recommended": "^2.1.0",
+        "stylelint-config-standard": "^18.2.0",
         "stylelint-webpack-plugin": "^0.10.5",
         "uglifyjs-webpack-plugin": "^1.2.7",
         "url-loader": "^1.0.1",
@@ -76,7 +79,10 @@
         "why-did-you-update": "^0.1.1"
     },
     "precommit": {
-        "run": [ "lint:js", "lint:css" ],
+        "run": [
+            "lint:js",
+            "lint:css"
+        ],
         "silent": true
     }
 }

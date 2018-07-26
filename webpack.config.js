@@ -88,7 +88,6 @@ const productionPlugins = [
 ];
 
 module.exports = function config() {
-    // 开发环境
     if (isDev) {
         plugins.push(
             ...[
@@ -284,9 +283,8 @@ function styleLoaderConfig(options = {}) {
                             autoprefixer: {
                                 browsers: ['Safari >= 10', 'last 1 firefox version', 'Chrome >= 62', 'Explorer >= 10']
                             },
-                            cssnano: {
-                                preset: 'default'
-                            }
+                            cssnano: { preset: 'default' },
+                            cssVariables: {}
                         }
                     }
                 }
