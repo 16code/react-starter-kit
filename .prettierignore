@@ -1,0 +1,4 @@
+**/*.md
+**/*.svg
+.babelrc
+package.json

@@ -1,0 +1,49 @@
+{
+    "presets": [
+        [
+            "env",
+            {
+                "targets": {
+                    "safari": 10,
+                    "firefox": 50,
+                    "chrome": 50
+                },
+                "modules": false,
+                "debug": false
+            }
+        ],
+        "react"
+    ],
+    "env": {
+		"development": {
+			"plugins": [ "react-hot-loader/babel" ]
+		},
+        "production": {
+            "presets": ["react-optimize"]
+        }
+    },
+    "plugins": [
+		"transform-runtime",
+        "transform-decorators-legacy",
+        "transform-object-rest-spread",
+        "transform-class-properties",
+        "dynamic-import-webpack",
+        [
+            "import",
+            {
+                "libraryName": "antd",
+                "style": false
+            }
+        ]
+    ],
+    "ignore": [
+        "react.production.min.js",
+        "react-dom.production.min.js",
+        "react-router-dom.min.js",
+        "redux.min.js",
+        "react-redux.min.js",
+        "redux-thunk.min.js",
+        "antd.min.js",
+        "moment.min.js"
+    ]
+}
