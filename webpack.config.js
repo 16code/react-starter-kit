@@ -42,7 +42,7 @@ const plugins = [
     new webpack.ProvidePlugin({
         React: 'react',
         ReactDOM: 'react-dom',
-        asyncComponent: 'AsyncComponent'
+        asyncComponent: ['AsyncComponent', 'default']
     }),
     new ExtractTextPlugin({
         filename: filesNameMapper.cssFilename,
@@ -148,7 +148,7 @@ module.exports = function config() {
                 src: path.join(__dirname, 'src'),
                 components: path.join(__dirname, 'src/components'),
                 containers: path.join(__dirname, 'src/containers'),
-                layouts: path.join(__dirname, 'src/containers/layouts'),
+                layouts: path.join(__dirname, 'src/layouts'),
                 common: path.join(__dirname, 'src/common'),
                 reducers: path.join(__dirname, 'src/reducers'),
                 pages: path.join(__dirname, 'src/pages'),
@@ -237,7 +237,7 @@ module.exports = function config() {
             splitChunks: {
                 cacheGroups: {
                     vendors: {
-                        test: /(vendors|babel-runtime|core-js)/,
+                        test: /(vendors|babel-runtime|core-js|react-router-dom)/,
                         priority: 10,
                         enforce: true,
                         name: 'vendors',
