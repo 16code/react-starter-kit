@@ -13,8 +13,9 @@ const cachePath = path.join(__dirname, '.cache');
 const srcPath = path.join(__dirname, 'src');
 const stylePath = path.join(__dirname, 'src/styles');
 const isDev = process.env.NODE_ENV === 'development';
+const port = process.env.PORT || 8181;
 
-const filesName = {
+const filesNameMapper = {
     filename: isDev ? '[name].js' : 'assets/vendor/[name].[chunkhash:5].js',
     chunkFilename: isDev ? '[name].chunk.js' : 'assets/js/[name].[chunkhash:5].chunk.js',
     cssFilename: isDev ? '[name].css' : 'assets/vendor/[name].[chunkhash:5].css',
@@ -43,7 +44,7 @@ const plugins = [
         asyncComponent: 'AsyncComponent'
     }),
     new ExtractTextPlugin({
-        filename: filesName.cssFilename,
+        filename: filesNameMapper.cssFilename,
         allChunks: true,
         disable: isDev && true,
         ignoreOrder: true
@@ -109,8 +110,8 @@ module.exports = function config() {
         },
         output: {
             path: distPath,
-            filename: filesName.filename,
-            chunkFilename: filesName.chunkFilename,
+            filename: filesNameMapper.filename,
+            chunkFilename: filesNameMapper.chunkFilename,
             publicPath: '/'
         },
         devServer: {
@@ -124,7 +125,8 @@ module.exports = function config() {
             publicPath: '/',
             historyApiFallback: true,
             host: '0.0.0.0',
-            port: 8181,
+            port,
+            inline: true,
             disableHostCheck: true,
             https: false,
             stats: 'errors-only',
@@ -205,7 +207,7 @@ module.exports = function config() {
                     use: [
                         {
                             loader: 'url-loader',
-                            options: { limit: 8192, name: filesName.fontFilename }
+                            options: { limit: 8192, name: filesNameMapper.fontFilename }
                         }
                     ]
                 },
@@ -216,7 +218,7 @@ module.exports = function config() {
                     use: [
                         {
                             loader: 'file-loader',
-                            options: { limit: 8124, name: filesName.imgFilename }
+                            options: { limit: 8124, name: filesNameMapper.imgFilename }
                         }
                     ]
                 }

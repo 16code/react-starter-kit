@@ -5,10 +5,11 @@
     "author": "StarLau",
     "license": "MIT",
     "scripts": {
-        "dev": "cross-env BABEL_ENV=development NODE_ENV=development npx webpack-dev-server --inline --hot",
+        "start:dev": "cross-env BABEL_ENV=development NODE_ENV=development npx webpack-dev-server --hot",
+        "start:preview": "node server.js",
         "build:prod": "cross-env BABEL_ENV=production NODE_ENV=production npx webpack -p --progress --colors --display minimal",
         "lint:js": "npx eslint --cache --cache-location '.cache/eslintcache' --quiet './src/**/*.js' './src/**/*.jsx'",
-        "lint:css": "npx stylelint 'src/**/*.css' 'src/**/*.less' --cache --cache-location '.cache/stylelintcache' --syntax less --fix"
+        "lint:css": "npx stylelint --cache --cache-location '.cache/stylelintcache' 'src/**/*.css' 'src/**/*.less' --syntax less --fix"
     },
     "dependencies": {
         "babel-runtime": "^6.26.0",

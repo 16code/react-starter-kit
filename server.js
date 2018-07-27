@@ -2,8 +2,7 @@ const express = require('express');
 const path = require('path');
 const proxy = require('express-http-proxy');
 const app = express();
-// gzip
-// app.use(compression());
+const port = process.env.PORT || 8181;
 app.use(express.static(`${__dirname}/dist`));
 app.use(
     '^/api',
@@ -16,7 +15,7 @@ app.use(
 app.get('*', (req, res) => {
     res.sendFile(path.join(`${__dirname}/dist/index.html`));
 });
-app.listen(8181, () => {
-    console.log('App listening on port 8181!');
+app.listen(port, () => {
+    console.log(`App listening on port ${port}!`);
 });
 module.exports = app;
