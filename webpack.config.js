@@ -28,6 +28,7 @@ const plugins = [
         template: './public/index.html',
         favicon: './public/favicon.ico',
         filename: 'index.html',
+        title: 'React Starter Kit',
         inject: 'body',
         minify: {
             minifyJS: true,
