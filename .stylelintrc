@@ -8,6 +8,6 @@
 		"string-no-newline": true,
 		"property-no-unknown": true,
 		"block-no-empty": true,
-		"unit-whitelist": ["rem", "px", "%", "deg"]
+		"unit-whitelist": ["rem", "px", "%", "deg", "s", "ms"]
     }
 }

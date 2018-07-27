@@ -32,7 +32,7 @@
             "import",
             {
                 "libraryName": "antd",
-                "style": false
+                "style": true
             }
         ]
     ],

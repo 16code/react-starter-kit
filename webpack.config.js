@@ -16,9 +16,9 @@ const isDev = process.env.NODE_ENV === 'development';
 const port = process.env.PORT || 8181;
 
 const filesNameMapper = {
-    filename: isDev ? '[name].js' : 'assets/vendor/[name].[chunkhash:5].js',
+    filename: isDev ? '[name].js' : 'assets/js/[name].[chunkhash:5].js',
     chunkFilename: isDev ? '[name].chunk.js' : 'assets/js/[name].[chunkhash:5].chunk.js',
-    cssFilename: isDev ? '[name].css' : 'assets/vendor/[name].[chunkhash:5].css',
+    cssFilename: isDev ? '[name].css' : 'assets/css/[name].[chunkhash:5].css',
     imgFilename: 'assets/images/[name].[hash:5].[ext]',
     fontFilename: 'assets/fonts/[name].[ext]?[hash:5]'
 };
@@ -155,6 +155,7 @@ module.exports = function config() {
                 services: path.join(__dirname, 'src/services'),
                 utils: path.join(__dirname, 'src/utils'),
                 styles: path.join(__dirname, 'src/styles'),
+                public: path.join(__dirname, 'public'),
                 AsyncComponent: path.join(__dirname, 'src/components/AsyncComponent.jsx')
             }
         },
@@ -187,8 +188,13 @@ module.exports = function config() {
                     ]
                 },
                 {
-                    test: /\.css$/,
+                    test: /.css$/,
                     include: srcPath,
+                    use: ExtractTextPlugin.extract(styleLoaderConfig())
+                },
+                {
+                    test: /(\.css|\.less)$/,
+                    include: /(node_modules\/antd)/,
                     use: ExtractTextPlugin.extract(styleLoaderConfig())
                 },
                 {
@@ -199,12 +205,12 @@ module.exports = function config() {
                 },
                 {
                     test: /\.less$/,
-                    include: /(src\/pages|src\/components|src\/containers)/,
+                    include: /(src\/pages|src\/components|src\/containers|src\/layouts)/,
                     use: ExtractTextPlugin.extract(styleLoaderConfig({ useCssModule: true })),
                     exclude: /(node_modules)/
                 },
                 {
-                    test: /\.(woff|woff2|ttf|eot)(\?]?.*)?$/,
+                    test: /\.(woff|woff2|ttf|eot|svg)(\?]?.*)?$/,
                     use: [
                         {
                             loader: 'url-loader',
@@ -237,10 +243,20 @@ module.exports = function config() {
             splitChunks: {
                 cacheGroups: {
                     vendors: {
-                        test: /(vendors|babel-runtime|core-js|react-router-dom)/,
+                        test: /(vendors|lodash|babel-runtime|core-js|react-router-dom)/,
                         priority: 10,
                         enforce: true,
                         name: 'vendors',
+                        chunks: 'all',
+                        minChunks: 1,
+                        minSize: 0,
+                        reuseExistingChunk: true
+                    },
+                    antd: {
+                        test: /(antd|create-react-class|async-validator|rc-)/,
+                        priority: 10,
+                        enforce: true,
+                        name: 'antd',
                         chunks: 'all',
                         minChunks: 1,
                         minSize: 0,
@@ -295,7 +311,10 @@ function styleLoaderConfig(options = {}) {
             {
                 loader: 'less-loader',
                 options: {
-                    javascriptEnabled: true
+                    javascriptEnabled: true,
+                    modifyVars: {
+                        '@icon-url': '"../../../../../public/fonts/iconfont"'
+                    }
                 }
             }
         ]
