@@ -88,7 +88,10 @@ const productionPlugins = [
         minRatio: 0.8
     })
 ];
-
+const entry = {
+    vendors: ['./src/vendors.js'],
+    app: ['./src/index.jsx']
+};
 module.exports = function config() {
     if (isDev) {
         plugins.push(
@@ -100,15 +103,13 @@ module.exports = function config() {
                 })
             ]
         );
+        entry.app.unshift('react-hot-loader/patch');
     } else {
         plugins.push(...productionPlugins);
     }
     return {
         mode: isDev ? 'development' : 'production',
-        entry: {
-            vendors: ['./src/vendors.js'],
-            app: ['./src/index.jsx']
-        },
+        entry,
         output: {
             path: distPath,
             filename: filesNameMapper.filename,
