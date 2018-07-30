@@ -11,6 +11,7 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const distPath = path.join(__dirname, 'dist');
 const cachePath = path.join(__dirname, '.cache');
 const srcPath = path.join(__dirname, 'src');
+const publicPath = path.join(__dirname, 'public');
 const stylePath = path.join(__dirname, 'src/styles');
 const isDev = process.env.NODE_ENV === 'development';
 const port = process.env.PORT || 8181;
@@ -201,8 +202,7 @@ module.exports = function config() {
                 {
                     test: /\.less$/,
                     include: stylePath,
-                    use: ExtractTextPlugin.extract(styleLoaderConfig({ useCssModule: false })),
-                    exclude: /(node_modules)/
+                    use: ExtractTextPlugin.extract(styleLoaderConfig({ useCssModule: false }))
                 },
                 {
                     test: /\.less$/,
@@ -212,6 +212,8 @@ module.exports = function config() {
                 },
                 {
                     test: /\.(woff|woff2|ttf|eot|svg)(\?]?.*)?$/,
+                    include: publicPath,
+                    exclude: srcPath,
                     use: [
                         {
                             loader: 'url-loader',
