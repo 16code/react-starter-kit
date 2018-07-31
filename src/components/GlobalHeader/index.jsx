@@ -45,7 +45,7 @@ export default function GlobalHeader({ logo, isMobile, collapsed, onCollapse, on
             <Icon
                 className={styles.trigger}
                 type={collapsed ? 'menu-unfold' : 'menu-fold'}
-                onClick={() => onCollapse(!collapsed)}
+                onClick={() => onCollapse()}
             />
             <div className={styles.right}>
                 <Tooltip title="使用文档">

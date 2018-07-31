@@ -1,10 +1,9 @@
 import { Layout } from 'antd';
+import { connect } from 'react-redux';
 import DocumentTitle from 'react-document-title';
 import { ContainerQuery } from 'react-container-query';
-import { connect } from 'react-redux';
 import { enquireScreen, unenquireScreen } from 'utils/enquire';
 
-import { uiActions } from 'reducers/uierReducer';
 import { userActions } from 'reducers/auth';
 
 import SiderMenu from 'components/SiderMenu';
@@ -12,7 +11,10 @@ import GlobalHeader from 'components/GlobalHeader';
 import { getMenuData } from 'common/menuData';
 import AuthService from 'services/auth.service';
 import logo from 'assets/images/logo.svg';
+import { ThemeContext, appTheme, appSidebarCollapsed } from 'containers/themeContext';
 
+const ThemeProvider = ThemeContext.Provider;
+const ThemeConsumer = ThemeContext.Consumer;
 const { Header } = Layout;
 let isMobile;
 enquireScreen(b => {
@@ -39,15 +41,14 @@ const query = {
     }
 };
 @connect(
-    ({ ui, ajax }) => ({ theme: ui.theme, sideBarCollapsed: ui.sideBarCollapsed, isFetching: ajax.isFetching }),
-    {
-        ...uiActions,
-        userLogout: userActions.userLogout
-    }
+    ({ ajax }) => ({ isFetching: ajax.isFetching }),
+    { userLogout: userActions.userLogout }
 )
 export default class BasicLayout extends React.PureComponent {
     state = {
-        isMobile
+        isMobile,
+        appTheme: appTheme,
+        appSidebarCollapsed: appSidebarCollapsed
     };
     constructor() {
         super();
@@ -56,9 +57,7 @@ export default class BasicLayout extends React.PureComponent {
     }
     componentDidMount() {
         this.enquireHandler = enquireScreen(mobile => {
-            this.setState({
-                isMobile: mobile
-            });
+            this.setState({ isMobile: mobile });
         });
     }
     componentWillUnmount() {
@@ -87,12 +86,22 @@ export default class BasicLayout extends React.PureComponent {
         return keys;
     }
     handleToggleCollapse = collapsed => {
-        const { toggleSideBarMenu } = this.props;
-        toggleSideBarMenu(collapsed);
+        this.setState(
+            state => ({
+                appSidebarCollapsed: typeof collapsed === 'undefined' ? !state.appSidebarCollapsed : collapsed
+            }),
+            () => {
+                localStorage.setItem('app-sidebar-collapsed', this.state.appSidebarCollapsed);
+            }
+        );
     };
     handleToggleTheme = () => {
-        const { theme, toggleTheme } = this.props;
-        toggleTheme(theme);
+        this.setState(
+            state => ({
+                appTheme: state.appTheme === 'light' ? 'dark' : 'light'
+            }),
+            () => localStorage.setItem('app-theme', this.state.appTheme)
+        );
     };
     handleLogout = () => {
         this.props.userLogout();
@@ -110,42 +119,49 @@ export default class BasicLayout extends React.PureComponent {
         }
     };
     get layout() {
-        const { theme, location } = this.props;
+        const { location } = this.props;
         return (
-            <Layout className="ant-layout-wrapper">
-                <SiderMenu
-                    logo={logo}
-                    theme={theme}
-                    location={location}
-                    menuData={this.menus}
-                    authorizeHelper={AuthService}
-                    isMobile={this.state.isMobile}
-                    collapsed={this.props.sideBarCollapsed}
-                    onCollapse={this.handleToggleCollapse}
-                    currentUserRole={this.currentUserRole}
-                />
-                <Layout>
-                    <Header style={{ padding: 0 }}>
-                        <GlobalHeader
+            <ThemeConsumer>
+                {({ appTheme, appSidebarCollapsed }) => (
+                    <Layout className="ant-layout-wrapper">
+                        <SiderMenu
                             logo={logo}
+                            theme={appTheme}
+                            location={location}
+                            menuData={this.menus}
+                            authorizeHelper={AuthService}
                             isMobile={this.state.isMobile}
-                            collapsed={this.props.sideBarCollapsed}
-                            onMenuClick={this.handleMenuClick}
+                            collapsed={appSidebarCollapsed}
                             onCollapse={this.handleToggleCollapse}
+                            currentUserRole={this.currentUserRole}
                         />
-                    </Header>
-                    <Layout>1313131</Layout>
-                </Layout>
-            </Layout>
+                        <Layout>
+                            <Header style={{ padding: 0 }}>
+                                <GlobalHeader
+                                    logo={logo}
+                                    isMobile={this.state.isMobile}
+                                    collapsed={appSidebarCollapsed}
+                                    onMenuClick={this.handleMenuClick}
+                                    onCollapse={this.handleToggleCollapse}
+                                />
+                            </Header>
+                            <Layout>1313131</Layout>
+                        </Layout>
+                    </Layout>
+                )}
+            </ThemeConsumer>
         );
     }
     render() {
+        const { appTheme, appSidebarCollapsed } = this.state;
         return (
-            <DocumentTitle title={this.getPageTitle()}>
-                <ContainerQuery query={query}>
-                    {params => <div className={classNames('layout-wrapper', params)}>{this.layout}</div>}
-                </ContainerQuery>
-            </DocumentTitle>
+            <ThemeProvider value={{ appTheme, appSidebarCollapsed }}>
+                <DocumentTitle title={this.getPageTitle()}>
+                    <ContainerQuery query={query}>
+                        {params => <div className={classNames('layout-wrapper', params)}>{this.layout}</div>}
+                    </ContainerQuery>
+                </DocumentTitle>
+            </ThemeProvider>
         );
     }
 }
