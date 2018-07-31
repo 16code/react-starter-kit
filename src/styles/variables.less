@@ -1,0 +1,18 @@
+@import '~antd/lib/style/themes/default.less';
+:root {
+    --primary-color: @primary-color;
+    --normal-color: @normal-color;
+    --text-color: @text-color;
+    --text-color-secondary: @text-color-secondary;
+    --body-bg: #f5f7fa;
+}
+
+@header-bar-height: 64px;
+@page-content-padding: 16px;
+@layout-header-padding-base: 10px;
+
+// Dock Panel
+@dock-panel-base-color: #fff;
+@dock-panel-background-color: @dock-panel-base-color;
+@dock-panel-head-background-color: @dock-panel-base-color;
+@dock-panel-body-background-color: darken(saturate(spin(@dock-panel-base-color, 0), 0), 3.1373);
