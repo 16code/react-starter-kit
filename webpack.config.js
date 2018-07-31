@@ -1,7 +1,8 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
@@ -20,6 +21,7 @@ const filesNameMapper = {
     filename: isDev ? '[name].js' : 'assets/js/[name].[chunkhash:5].js',
     chunkFilename: isDev ? '[name].chunk.js' : 'assets/js/[name].[chunkhash:5].chunk.js',
     cssFilename: isDev ? '[name].css' : 'assets/css/[name].[chunkhash:5].css',
+    cssChunkFilename: isDev ? '[id].css' : 'assets/css/[name].[chunkhash:5].css',
     imgFilename: 'assets/images/[name].[hash:5].[ext]',
     fontFilename: 'assets/fonts/[name].[ext]?[hash:5]'
 };
@@ -43,13 +45,12 @@ const plugins = [
     new webpack.ProvidePlugin({
         React: 'react',
         ReactDOM: 'react-dom',
+        classNames: 'classnames',
         asyncComponent: ['AsyncComponent', 'default']
     }),
-    new ExtractTextPlugin({
+    new MiniCssExtractPlugin({
         filename: filesNameMapper.cssFilename,
-        allChunks: true,
-        disable: isDev && true,
-        ignoreOrder: true
+        chunkFilename: filesNameMapper.cssChunkFilename
     }),
     new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /zh-cn/)
 ];
@@ -91,7 +92,7 @@ const productionPlugins = [
 ];
 const entry = {
     vendors: ['./src/vendors.js'],
-    app: ['./src/index.jsx']
+    app: ['./src/index.jsx', './src/styles/index.less']
 };
 module.exports = function config() {
     if (isDev) {
@@ -157,6 +158,8 @@ module.exports = function config() {
                 services: path.join(__dirname, 'src/services'),
                 utils: path.join(__dirname, 'src/utils'),
                 styles: path.join(__dirname, 'src/styles'),
+                sagas: path.join(__dirname, 'src/sagas'),
+                store: path.join(__dirname, 'src/store'),
                 public: path.join(__dirname, 'public'),
                 AsyncComponent: path.join(__dirname, 'src/components/AsyncComponent.jsx')
             }
@@ -192,22 +195,24 @@ module.exports = function config() {
                 {
                     test: /.css$/,
                     include: srcPath,
-                    use: ExtractTextPlugin.extract(styleLoaderConfig())
+                    use: styleLoaderConfig()
                 },
                 {
-                    test: /(\.css|\.less)$/,
-                    include: /(node_modules\/antd)/,
-                    use: ExtractTextPlugin.extract(styleLoaderConfig())
+                    test: /\.(css|less)$/,
+                    include: /(node_modules)/,
+                    exclude: srcPath,
+                    use: styleLoaderConfig()
                 },
                 {
                     test: /\.less$/,
                     include: stylePath,
-                    use: ExtractTextPlugin.extract(styleLoaderConfig({ useCssModule: false }))
+                    use: styleLoaderConfig({ useCssModule: false }),
+                    exclude: /(node_modules)/
                 },
                 {
                     test: /\.less$/,
                     include: /(src\/pages|src\/components|src\/containers|src\/layouts)/,
-                    use: ExtractTextPlugin.extract(styleLoaderConfig({ useCssModule: true })),
+                    use: styleLoaderConfig({ useCssModule: true }),
                     exclude: /(node_modules)/
                 },
                 {
@@ -278,50 +283,48 @@ module.exports = function config() {
 };
 
 function styleLoaderConfig(options = {}) {
-    const { useCssModule } = options;
-    return {
-        fallback: 'style-loader',
-        use: [
-            {
-                loader: 'cache-loader',
-                options: {
-                    cacheDirectory: path.join(cachePath, 'csscache')
-                }
-            },
-            {
-                loader: 'css-loader',
-                options: {
-                    importLoaders: 2,
-                    modules: useCssModule && useCssModule,
-                    localIdentName: '[local]--[hash:base64:4]'
-                }
-            },
-            {
-                loader: 'postcss-loader',
-                options: {
-                    config: {
-                        path: path.join(__dirname, 'postcss.config.js'),
-                        ctx: {
-                            autoprefixer: {
-                                browsers: ['Safari >= 10', 'last 1 firefox version', 'Chrome >= 62', 'Explorer >= 10']
-                            },
-                            cssnano: { preset: 'default' },
-                            cssVariables: {}
-                        }
-                    }
-                }
-            },
-            {
-                loader: 'less-loader',
-                options: {
-                    javascriptEnabled: true,
-                    modifyVars: {
-                        '@icon-url': '"../../../../../public/fonts/iconfont"'
+    const useCssModule = options.useCssModule || false;
+    return [
+        isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
+        {
+            loader: 'cache-loader',
+            options: {
+                cacheDirectory: path.join(cachePath, 'csscache')
+            }
+        },
+        {
+            loader: 'css-loader',
+            options: {
+                importLoaders: 2,
+                modules: useCssModule,
+                localIdentName: '[local]--[hash:base64:4]'
+            }
+        },
+        {
+            loader: 'postcss-loader',
+            options: {
+                config: {
+                    path: path.join(__dirname, 'postcss.config.js'),
+                    ctx: {
+                        autoprefixer: {
+                            browsers: ['Safari >= 10', 'last 1 firefox version', 'Chrome >= 62', 'Explorer >= 10']
+                        },
+                        cssnano: { preset: 'default' },
+                        cssVariables: {}
                     }
                 }
             }
-        ]
-    };
+        },
+        {
+            loader: 'less-loader',
+            options: {
+                javascriptEnabled: true,
+                modifyVars: {
+                    '@icon-url': '"../../../../../public/fonts/iconfont"'
+                }
+            }
+        }
+    ];
 }
 
 function nodeModulesPath(filePath) {

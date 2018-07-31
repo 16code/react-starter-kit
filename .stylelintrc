@@ -8,6 +8,10 @@
 		"string-no-newline": true,
 		"property-no-unknown": true,
 		"block-no-empty": true,
-		"unit-whitelist": ["rem", "px", "%", "deg", "s", "ms"]
+		"no-descending-specificity": null,
+		"unit-whitelist": ["rem", "px", "%", "deg", "s", "ms"],
+		"selector-pseudo-class-no-unknown": [true, {
+			"ignorePseudoClasses": ["global", "local"]
+		}]
     }
 }
