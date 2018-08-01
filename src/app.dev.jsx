@@ -19,5 +19,5 @@ module.hot.accept('./containers/AppContainer', () => render(AppContainer));
 /* eslint-disable max-len */
 whyDidYouUpdate(React, {
     groupByComponent: true,
-    exclude: [/^(Adapter|Basic|Connect|MenuItem|Route|Switch|Link|Tooltip|Divider|SubPopupMenu|LazyRenderBox|Menu|Sider|AnimateChild|Dropdown)/i]
+    exclude: [/^(Adapter|Basic|Connect|MenuItem|Route|Switch|Link|Tooltip|Divider|SubPopupMenu|LazyRenderBox|Menu|Sider|AnimateChild|Dropdown|PopupInner)/i]
 });

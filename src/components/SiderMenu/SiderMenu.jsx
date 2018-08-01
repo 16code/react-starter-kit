@@ -1,5 +1,6 @@
 import { Layout, Menu, Icon } from 'antd';
 import { Link } from 'react-router-dom';
+import AuthService from 'services/auth.service';
 import { pathToRegexp, urlToList } from 'utils/index.js';
 
 const { Sider } = Layout;
@@ -36,8 +37,6 @@ export default class SiderMenu extends React.PureComponent {
         super(props);
         this.menus = props.menuData;
         flatMenuKeys = getFlatMenuKeys(this.menus);
-        console.log(flatMenuKeys);
-
         this.state = {
             openKeys: this.constructor.getDefaultCollapsedSubMenus(props)
         };
@@ -149,8 +148,8 @@ export default class SiderMenu extends React.PureComponent {
             .filter(item => item);
     };
     checkPermissionItem = (authRole, ItemDom) => {
-        const { authorizeHelper, currentUserRole } = this.props;
-        return authorizeHelper.check(authRole, currentUserRole, ItemDom);
+        const { userRole } = this.props;
+        return AuthService.check(authRole, userRole, ItemDom);
     };
     render() {
         const { collapsed, onCollapse, logo, theme, width } = this.props;

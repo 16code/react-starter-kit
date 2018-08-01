@@ -1,5 +1,5 @@
-import { encrypt, decrypt } from '../utils/index';
-import { checkPermissions } from '../utils/checkPermissions';
+import { encrypt, decrypt } from 'utils/index';
+import { checkPermissions } from 'utils/checkPermissions';
 
 const USER_LEVEL_KEY_NAME = 'USER_LEVEL';
 const USER_TOKEN_KEY_NAME = 'USER_TOKEN';

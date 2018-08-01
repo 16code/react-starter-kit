@@ -20,7 +20,9 @@ const initialState = {
     ...AuthService.getUser(),
     isRefreshing: false,
     isloading: false,
-    error: null
+    error: null,
+    token: true,
+    userRole: AuthService.getAuthority()
 };
 
 // actions

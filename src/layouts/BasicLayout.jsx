@@ -9,7 +9,6 @@ import { userActions } from 'reducers/auth';
 import SiderMenu from 'components/SiderMenu';
 import GlobalHeader from 'components/GlobalHeader';
 import { getMenuData } from 'common/menuData';
-import AuthService from 'services/auth.service';
 import logo from 'assets/images/logo.svg';
 import { ThemeContext, appTheme, appSidebarCollapsed } from 'containers/themeContext';
 import Pages from 'pages/index';
@@ -42,7 +41,7 @@ const query = {
     }
 };
 @connect(
-    ({ ajax }) => ({ isFetching: ajax.isFetching }),
+    ({ ajax, auth }) => ({ isFetching: ajax.isFetching, userRole: auth.userRole }),
     { userLogout: userActions.userLogout }
 )
 export default class BasicLayout extends React.PureComponent {
@@ -54,7 +53,6 @@ export default class BasicLayout extends React.PureComponent {
     constructor() {
         super();
         this.menus = getMenuData();
-        this.currentUserRole = AuthService.getAuthority();
     }
     componentDidMount() {
         this.enquireHandler = enquireScreen(mobile => {
@@ -120,7 +118,7 @@ export default class BasicLayout extends React.PureComponent {
         }
     };
     get layout() {
-        const { location } = this.props;
+        const { location, userRole } = this.props;
         return (
             <ThemeConsumer>
                 {({ appTheme, appSidebarCollapsed }) => (
@@ -130,11 +128,10 @@ export default class BasicLayout extends React.PureComponent {
                             theme={appTheme}
                             location={location}
                             menuData={this.menus}
-                            authorizeHelper={AuthService}
                             isMobile={this.state.isMobile}
                             collapsed={appSidebarCollapsed}
                             onCollapse={this.handleToggleCollapse}
-                            currentUserRole={this.currentUserRole}
+                            userRole={userRole}
                         />
                         <Layout>
                             <Header style={{ padding: 0 }}>
@@ -147,7 +144,7 @@ export default class BasicLayout extends React.PureComponent {
                                 />
                             </Header>
                             <Layout>
-                                <Pages currentUserRole={this.currentUserRole} />
+                                <Pages />
                             </Layout>
                         </Layout>
                     </Layout>

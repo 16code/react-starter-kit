@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { Route, Redirect } from 'react-router-dom';
 import { getMenuData, getMenuDataPathKeys } from 'common/menuData';
 
@@ -27,14 +26,12 @@ const prmissionDeniedePage = props => (
         }}
     />
 );
-const AuthorizedRoute = ({ component: ComposedComponent, ...rest }) => {
-    @connect(({ auth }) => ({ token: auth.token }))
+const Authorized = ({ component: ComposedComponent, ...rest }) => {
     class AuthComponent extends React.PureComponent {
         componentRender = props => {
-            const { location } = props;
-            const { userRole } = rest;
-            if (this.props.token) {
-                const { authRole } = menuDataPathKeys[location.pathname] || {};
+            const { userRole, userToken } = rest;
+            if (userToken) {
+                const { authRole } = menuDataPathKeys[props.location.pathname] || {};
                 if (authRole && userRole && !~authRole.indexOf(userRole)) {
                     return prmissionDeniedePage(props);
                 }
@@ -44,12 +41,12 @@ const AuthorizedRoute = ({ component: ComposedComponent, ...rest }) => {
         };
 
         render() {
-            return <Route {...rest} render={this.componentRender} />;
+            return <Route render={this.componentRender} />;
         }
     }
     return <AuthComponent />;
 };
-AuthorizedRoute.propTypes = {
+Authorized.propTypes = {
     component: PropTypes.func
 };
-export default AuthorizedRoute;
+export default Authorized;
