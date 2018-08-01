@@ -4,10 +4,11 @@ import styles from './index.less';
 
 const MenuItem = Menu.Item;
 const MenuDivider = Menu.Divider;
+const selectedKeys = [];
 
 function HeaderMenu({ onMenuClick }) {
     const menu = (
-        <Menu onClick={onMenuClick} className={styles.menu} selectedKeys={[]}>
+        <Menu onClick={onMenuClick} className={styles['dropdown-menu']} selectedKeys={selectedKeys}>
             <MenuItem disabled>
                 <Icon type="user" />个人中心
             </MenuItem>
@@ -19,7 +20,7 @@ function HeaderMenu({ onMenuClick }) {
             </MenuItem>
             <MenuDivider />
             <MenuItem key="logout">
-                <Icon type="logout" /> 退出登录
+                <Icon type="logout" />退出登录
             </MenuItem>
         </Menu>
     );
@@ -27,7 +28,7 @@ function HeaderMenu({ onMenuClick }) {
         <Dropdown overlay={menu} trigger={['click']}>
             <span className={`${styles.action} ${styles.account}`}>
                 <Avatar size="small" icon="user" src={require('assets/images/avatar.png')} className={styles.avatar} />
-                <span className={styles.name}>Liuxin</span>
+                <span className={styles.name}>Hello, Jerry</span>
             </span>
         </Dropdown>
     );
@@ -35,13 +36,15 @@ function HeaderMenu({ onMenuClick }) {
 
 export default function GlobalHeader({ logo, isMobile, collapsed, onCollapse, onMenuClick }) {
     return (
-        <div className={styles.header}>
-            {isMobile && [
-                <Link to="/" className={styles.logo} key="logo">
-                    <img src={logo} alt="logo" width="32" />
-                </Link>,
-                <Divider type="vertical" key="line" />
-            ]}
+        <div className={styles['app-header']}>
+            {isMobile && (
+                <f>
+                    <Link to="/" className={styles.logo} key="logo">
+                        <img src={logo} alt="logo" width="32" />
+                    </Link>
+                    <Divider type="vertical" key="line" />
+                </f>
+            )}
             <Icon
                 className={styles.trigger}
                 type={collapsed ? 'menu-unfold' : 'menu-fold'}

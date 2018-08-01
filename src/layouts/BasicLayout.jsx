@@ -12,6 +12,7 @@ import { getMenuData } from 'common/menuData';
 import AuthService from 'services/auth.service';
 import logo from 'assets/images/logo.svg';
 import { ThemeContext, appTheme, appSidebarCollapsed } from 'containers/themeContext';
+import Pages from 'pages/index';
 
 const ThemeProvider = ThemeContext.Provider;
 const ThemeConsumer = ThemeContext.Consumer;
@@ -145,7 +146,9 @@ export default class BasicLayout extends React.PureComponent {
                                     onCollapse={this.handleToggleCollapse}
                                 />
                             </Header>
-                            <Layout>1313131</Layout>
+                            <Layout>
+                                <Pages currentUserRole={this.currentUserRole} />
+                            </Layout>
                         </Layout>
                     </Layout>
                 )}
