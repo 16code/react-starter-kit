@@ -15,7 +15,7 @@ export default class NormalLoginForm extends React.PureComponent {
         const { getFieldDecorator } = this.props.form;
         return (
             <f>
-                <h1 className="login-form-title">后台管理系统</h1>
+                <h1 className="login-form-title">{APP_NAME}</h1>
                 <div className="login-form">
                     <Form onSubmit={this.handleSubmit} autoComplete="off">
                         <FormItem>

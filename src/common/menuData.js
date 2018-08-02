@@ -11,7 +11,8 @@ const menuData = [
         children: [
             {
                 name: '用户列表',
-                path: 'users'
+                path: 'users',
+                role: ['admin', 'guest']
             },
             {
                 name: '产品列表',

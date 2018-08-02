@@ -173,7 +173,7 @@ export default class SiderMenu extends React.PureComponent {
                 <div className="logo" key="logo">
                     <Link to="/">
                         <img src={logo} alt="logo" />
-                        <h1>Demo Admin</h1>
+                        <h1>{APP_NAME}</h1>
                     </Link>
                 </div>
                 <Menu
