@@ -42,6 +42,7 @@
         "react-redux.min.js",
         "redux-thunk.min.js",
         "antd.min.js",
+        "moment.js",
         "moment.min.js"
     ]
 }

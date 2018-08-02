@@ -9,7 +9,8 @@
         "System": true,
         "asyncComponent": true,
         "classNames": true,
-        "__DEV__": true
+        "__DEV__": true,
+        "APP_NAME": true
     },
     "env": {
         "es6": true,

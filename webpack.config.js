@@ -26,7 +26,10 @@ const filesNameMapper = {
     fontFilename: 'assets/fonts/[name].[ext]?[hash:5]'
 };
 const plugins = [
-    new webpack.DefinePlugin({ __DEV__: isDev }),
+    new webpack.DefinePlugin({
+        __DEV__: isDev,
+        APP_NAME: '"后台管理系统"'
+    }),
     new HtmlWebpackPlugin({
         template: './public/index.html',
         favicon: './public/favicon.ico',
@@ -45,6 +48,7 @@ const plugins = [
     new webpack.ProvidePlugin({
         React: 'react',
         ReactDOM: 'react-dom',
+        moment: 'moment',
         classNames: 'classnames',
         asyncComponent: ['AsyncComponent', 'default']
     }),
@@ -149,6 +153,7 @@ module.exports = function config() {
                 redux: nodeModulesPath('/redux/dist/redux.min.js'),
                 'react-redux': nodeModulesPath('/react-redux/dist/react-redux.min.js'),
                 src: path.join(__dirname, 'src'),
+                i18n: path.join(__dirname, 'src/i18n'),
                 components: path.join(__dirname, 'src/components'),
                 containers: path.join(__dirname, 'src/containers'),
                 layouts: path.join(__dirname, 'src/layouts'),
@@ -243,7 +248,7 @@ module.exports = function config() {
             moduleExtensions: ['-loader']
         },
         externals: {
-            moment: true
+            moment: false
         },
         plugins,
         optimization: {
@@ -251,7 +256,7 @@ module.exports = function config() {
             splitChunks: {
                 cacheGroups: {
                     vendors: {
-                        test: /(vendors|lodash|babel-runtime|core-js|react-router-dom)/,
+                        test: /(vendors|lodash|babel-runtime|core-js|react-router-dom|moment)/,
                         priority: 10,
                         enforce: true,
                         name: 'vendors',

@@ -6,7 +6,7 @@
     "license": "MIT",
     "scripts": {
         "start:dev": "cross-env BABEL_ENV=development NODE_ENV=development npx webpack-dev-server --hot",
-        "start:preview": "node server.js",
+        "start:preview": "cross-env NODE_ENV=development node server.js",
         "build:prod": "cross-env BABEL_ENV=production NODE_ENV=production npx webpack -p --progress --colors --display minimal",
         "lint:js": "npx eslint --cache --cache-location '.cache/eslintcache' --quiet './src/**/*.js' './src/**/*.jsx'",
         "lint:css": "npx stylelint --cache --cache-location '.cache/stylelintcache' 'src/**/*.css' 'src/**/*.less' --syntax less --fix"
@@ -16,6 +16,7 @@
         "babel-runtime": "^6.26.0",
         "classnames": "^2.2.6",
         "enquire.js": "^2.1.6",
+        "moment": "^2.22.2",
         "react": "^16.4.1",
         "react-container-query": "^0.11.0",
         "react-document-title": "^2.0.3",
