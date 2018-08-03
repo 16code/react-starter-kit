@@ -32,20 +32,19 @@ function isUrl(path) {
     return reg.test(path);
 }
 
-function formatter(data, parentPath, parentAuthRole) {
+function formatter(data, parentPath = '/', parentAuthRole) {
     return data.map(item => {
         let { path } = item;
         if (!isUrl(path)) {
-            path = parentPath ? parentPath + item.path : item.path;
+            path = parentPath + item.path;
         }
         const result = {
             ...item,
-            path: path.replace(/\/$/, ''),
+            path,
             authRole: item.role || parentAuthRole
         };
         if (item.children) {
-            const parent = item.path === '/' ? '/' : `/${item.path}/`;
-            result.children = formatter(item.children, parent, item.role);
+            result.children = formatter(item.children, `${parentPath}${item.path}/`, item.role);
         }
         return result;
     });

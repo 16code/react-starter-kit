@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import BasicLayout from 'layouts/BasicLayout';
 import { store } from 'store/configureStore.js';
 import { zhCN } from 'i18n/zh-CN';
+import 'utils/fetch';
 
 const LoginLayout = asyncComponent(() => import(/* webpackChunkName: "login" */ 'layouts/LoginLayout'));
 

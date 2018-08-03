@@ -1,0 +1,29 @@
+@import '~styles/variables';
+
+.layout-header {
+    display: grid;
+    grid-column-gap: 0.1rem;
+    grid-row-gap: 0.1rem;
+    grid-auto-flow: column;
+    align-items: center;
+    justify-content: space-between;
+    background: @component-background;
+    height: auto;
+    line-height: 1;
+    padding: @padding-base;
+    border-bottom: @border-width-base @border-style-base @border-color-split;
+}
+.actions {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-column-gap: 0.1rem;
+}
+@media screen and (max-width: @screen-xs) {
+    .layout-header {
+        grid-auto-flow: row;
+        justify-content: normal;
+    }
+    .actions {
+        grid-template-columns: 1fr auto;
+    }
+}
