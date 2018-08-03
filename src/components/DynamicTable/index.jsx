@@ -16,14 +16,13 @@ export default class DynamicTable extends React.PureComponent {
     static pageContent;
     constructor(props) {
         super(props);
-        const { showSizeChanger } = props;
         this.state = {
             dataSource: [],
-            stateColumns: this.props.columns || [],
+            stateColumns: props.columns || [],
             pagination: {
                 current: 1,
                 pageSize: 20,
-                showSizeChanger: !!showSizeChanger,
+                showSizeChanger: !!props.showSizeChanger,
                 onChange: this.handleShowSizeChange,
                 onShowSizeChange: this.handleShowSizeChange,
                 pageSizeOptions: ['10', '20', '30', '50', '80', '100'],
@@ -91,7 +90,7 @@ export default class DynamicTable extends React.PureComponent {
         this.setState({ stateColumns: [...newColumns] });
     };
     render() {
-        const { stateColumns, pagination } = this.state;
+        const { stateColumns, pagination, dataSource } = this.state;
         const { columns, extra, isFetching, ...rest } = this.props;
         if (!columns) return null;
         const toolbarCls = classNames(styles['dynamic-table-toolbar'], { [styles['without-extra']]: !extra });
@@ -114,10 +113,10 @@ export default class DynamicTable extends React.PureComponent {
                 </div>
                 <div className={styles['dynamic-table-body']}>
                     <Table
-                        dataSource={this.state.dataSource}
                         size="middle"
-                        loading={isFetching}
                         columns={this.tableColumns}
+                        dataSource={dataSource}
+                        loading={isFetching}
                         pagination={pagination}
                         {...rest}
                     />

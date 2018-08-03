@@ -23,6 +23,6 @@ whyDidYouUpdate(React, {
         /^Connect/i,
         /^(Route|Switch|Link)/i, // for router
         /^(Tooltip|Divider|SubPopupMenu|LazyRenderBox|Menu|Sider|AnimateChild|Dropdown|PopupInner|DOMWrap|Adapter|Basic|MenuItem|SubMenu)/i, // for antd
-        /^(Table|Radio|LocaleReceiver|ExpandableRow|Pagination|Options|MiniSelect|Select)/i
+        /^(Table|Radio|LocaleReceiver|ExpandableRow|Pagination|Options|MiniSelect|Select|Checkbox)/i
     ]
 });

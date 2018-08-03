@@ -1,5 +1,5 @@
 import { Button, Tooltip, Popover, Checkbox } from 'antd';
-import { toggleFullScreen } from 'utils';
+import { toggleFullScreen } from 'utils/index.js';
 import styles from './index.less';
 
 export default class ToolbarRight extends React.PureComponent {
@@ -72,7 +72,7 @@ export default class ToolbarRight extends React.PureComponent {
         );
     };
     handleToggleFullScreen = () => {
-        const dom = document.querySelector('.page-content');
+        const dom = document.getElementById('app-page-content');
         toggleFullScreen(dom);
         this.setState(prevState => ({ isFullscreen: !prevState.isFullscreen }));
     };
@@ -80,7 +80,7 @@ export default class ToolbarRight extends React.PureComponent {
         return [
             <Tooltip placement="top" key="reload" title="重载数据">
                 <Button
-                    disabled={this.props.loading}	
+                    disabled={this.props.loading}
                     shape="circle"
                     icon="reload"
                     onClick={() => (this.props.onReload && this.props.onReload()) || undefined}
@@ -93,7 +93,7 @@ export default class ToolbarRight extends React.PureComponent {
                     icon={this.state.isFullscreen ? 'shrink' : 'arrows-alt'}
                     onClick={this.handleToggleFullScreen}
                 />
-            </Tooltip>,	
+            </Tooltip>,
             <Popover
                 key="columnFiled"
                 placement="leftTop"
@@ -115,4 +115,3 @@ export default class ToolbarRight extends React.PureComponent {
         ];
     }
 }
-

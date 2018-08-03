@@ -17,9 +17,7 @@ const headAction = (
 );
 export default class ProdList extends React.PureComponent {
     state = {
-        params: {
-            state: ''
-        }
+        params: {}
     };
     handleReset = () => {
         this.setState({ params: { state: '' } });
