@@ -41,7 +41,7 @@ const query = {
     }
 };
 @connect(
-    ({ ajax, auth }) => ({ isFetching: ajax.isFetching, userRole: auth.userRole }),
+    ({ ajax, auth }) => ({ isFetching: ajax.isFetching, userRole: auth.role }),
     { userLogout: userActions.userLogout }
 )
 export default class BasicLayout extends React.PureComponent {

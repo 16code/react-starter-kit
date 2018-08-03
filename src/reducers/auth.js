@@ -20,16 +20,14 @@ const initialState = {
     ...AuthService.getUser(),
     isRefreshing: false,
     isloading: false,
-    error: null,
-    token: true,
-    userRole: AuthService.getAuthority()
+    error: null
 };
 
 // actions
 export const userActions = {
-    userLogin: (user, rest) => ({
+    userLogin: (user, location, history) => ({
         type: types.userLogin,
-        payload: { user, ...rest }
+        payload: { user, location, history }
     }),
     userLogout: () => ({ type: types.userLogout })
 };

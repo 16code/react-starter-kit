@@ -8,7 +8,7 @@ const dashboard = asyncComponent(() => import(/* webpackChunkName: "dashboard" *
 const list = asyncComponent(() => import(/* webpackChunkName: "list" */ 'pages/list'));
 
 @withRouter
-@connect(({ auth }) => ({ userRole: auth.userRole, userToken: auth.token }))
+@connect(({ auth }) => ({ userRole: auth.role, userToken: auth.token }))
 export default class Routes extends React.PureComponent {
     render() {
         const { userRole, userToken } = this.props;
