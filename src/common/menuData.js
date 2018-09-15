@@ -20,8 +20,7 @@ const menuData = [
             },
             {
                 name: '订单列表',
-                path: 'orders',
-                role: 'best'
+                path: 'orders'
             }
         ]
     }
