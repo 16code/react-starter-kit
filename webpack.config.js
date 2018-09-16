@@ -250,7 +250,7 @@ module.exports = function config() {
             splitChunks: {
                 cacheGroups: {
                     vendors: {
-                        test: /(vendors|lodash|babel-runtime|core-js|react-router-dom|moment)/,
+                        test: /(vendors|babel-runtime|core-js|react-router-dom|moment)/,
                         priority: 10,
                         enforce: true,
                         name: 'vendors',
@@ -268,12 +268,6 @@ module.exports = function config() {
                     //     minChunks: 1,
                     //     minSize: 0,
                     //     reuseExistingChunk: true
-                    // },
-                    // styles: {
-                    //     name: 'styles',
-                    //     test: /\.less$/,
-                    //     chunks: 'all',
-                    //     enforce: true
                     // }
                 }
             }

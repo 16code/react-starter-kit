@@ -252,6 +252,10 @@
         ]
     },
     "settings": {
+        "react": {
+            "pragma": "React",
+            "version": "16.5"
+        },
         "import/resolver": {
             "node": {
                 "extensions": [".js", ".json"]
