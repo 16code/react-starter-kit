@@ -1171,7 +1171,10 @@ babel-plugin-import@^1.9.1:
   resolved "https://registry.yarnpkg.com/babel-plugin-import/-/babel-plugin-import-1.9.1.tgz#ceb3b37e4920cec094a075fee674fb3dddafc9c8"
   dependencies:
     "@babel/helper-module-imports" "^7.0.0"
+<<<<<<< HEAD
     "@babel/runtime" "^7.0.0"
+=======
+>>>>>>> f4e8c53b0455113274e0e7f6dd361cdac7ea584f
 
 babel-plugin-syntax-decorators@^6.1.18:
   version "6.13.0"
