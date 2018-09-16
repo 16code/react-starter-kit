@@ -87,11 +87,8 @@ const productionPlugins = [
         }
     }),
     new CompressionPlugin({
-        asset: '[path].gz[query]',
-        algorithm: 'gzip',
         test: /\.js$|\.css$|\.html$|\.eot?.+$|\.ttf?.+$|\.woff?.+$|\.svg?.+$/,
-        threshold: 10240,
-        minRatio: 0.8
+        threshold: 10240
     })
 ];
 const entry = {
@@ -147,12 +144,9 @@ module.exports = function config() {
             alias: {
                 react: isDev ? 'react' : nodeModulesPath('/react/umd/react.production.min.js'),
                 'react-dom': isDev ? 'react-dom' : nodeModulesPath('/react-dom/umd/react-dom.production.min.js'),
-                'react-router-dom': isDev
-                    ? 'react-router-dom'
-                    : nodeModulesPath('/react-router-dom/umd/react-router-dom.min.js'),
                 redux: nodeModulesPath('/redux/dist/redux.min.js'),
                 'react-redux': nodeModulesPath('/react-redux/dist/react-redux.min.js'),
-                src: path.join(__dirname, 'src'),
+                '@': path.join(__dirname, 'src'),
                 i18n: path.join(__dirname, 'src/i18n'),
                 components: path.join(__dirname, 'src/components'),
                 containers: path.join(__dirname, 'src/containers'),
@@ -252,7 +246,7 @@ module.exports = function config() {
         },
         plugins,
         optimization: {
-            occurrenceOrder: true,
+            occurrenceOrder: false,
             splitChunks: {
                 cacheGroups: {
                     vendors: {
@@ -264,17 +258,23 @@ module.exports = function config() {
                         minChunks: 1,
                         minSize: 0,
                         reuseExistingChunk: true
-                    },
-                    antd: {
-                        test: /(antd|create-react-class|async-validator|rc-)/,
-                        priority: 10,
-                        enforce: true,
-                        name: 'antd',
-                        chunks: 'all',
-                        minChunks: 1,
-                        minSize: 0,
-                        reuseExistingChunk: true
                     }
+                    // antd: {
+                    //     test: /(antd|create-react-class|async-validator|rc-)/,
+                    //     priority: 10,
+                    //     enforce: true,
+                    //     name: 'antd',
+                    //     chunks: 'all',
+                    //     minChunks: 1,
+                    //     minSize: 0,
+                    //     reuseExistingChunk: true
+                    // },
+                    // styles: {
+                    //     name: 'styles',
+                    //     test: /\.less$/,
+                    //     chunks: 'all',
+                    //     enforce: true
+                    // }
                 }
             }
         },

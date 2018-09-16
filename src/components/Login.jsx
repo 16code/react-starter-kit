@@ -32,7 +32,7 @@ export default class NormalLoginForm extends React.PureComponent {
         const { getFieldDecorator } = this.props.form;
         const { isloading } = this.props;
         return (
-            <f>
+            <>
                 <h1 className="login-form-title">{APP_NAME}</h1>
                 <div className="login-form">
                     <Form onSubmit={this.handleSubmit} autoComplete="off">
@@ -76,7 +76,7 @@ export default class NormalLoginForm extends React.PureComponent {
                         </FormItem>
                     </Form>
                 </div>
-            </f>
+            </>
         );
     }
 }

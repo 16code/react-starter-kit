@@ -5,7 +5,7 @@ const ButtonGroup = Button.Group;
 const RadioGroup = Radio.Group;
 const RadioButton = Radio.Button;
 const headAction = (
-    <f>
+    <>
         <ButtonGroup>
             <Button icon="download">导出</Button>
             <Button icon="to-top">导入</Button>
@@ -13,7 +13,7 @@ const headAction = (
         <Button type="primary" icon="plus">
             添加
         </Button>
-    </f>
+    </>
 );
 export default class ProdList extends React.PureComponent {
     state = {
@@ -89,20 +89,18 @@ export default class ProdList extends React.PureComponent {
         ];
 
         return (
-            <f>
-                <PageHeaderLayout title="用户列表" action={headAction}>
-                    <DynamicTable
-                        rowKey="id"
-                        url="/products"
-                        searchParams={this.state.params}
-                        fieldKey="data"
-                        columns={columns}
-                        scroll={{ x: 1280 }}
-                        extra={extra}
-                        showSizeChanger
-                    />
-                </PageHeaderLayout>
-            </f>
+            <PageHeaderLayout title="用户列表" action={headAction}>
+                <DynamicTable
+                    rowKey="id"
+                    url="/products"
+                    searchParams={this.state.params}
+                    fieldKey="data"
+                    columns={columns}
+                    scroll={{ x: 1280 }}
+                    extra={extra}
+                    showSizeChanger
+                />
+            </PageHeaderLayout>
         );
     }
 }

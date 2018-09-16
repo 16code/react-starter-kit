@@ -6,7 +6,7 @@ export default function AppSiderMenu(props) {
         <DrawerMenu
             width={drawerMenuWidth}
             placement="left"
-            wrapClassName="app-drawer-menu"
+            className="app-drawer-menu"
             closable={false}
             visible={!props.collapsed}
             onClose={() => {

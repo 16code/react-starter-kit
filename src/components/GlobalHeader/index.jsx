@@ -10,17 +10,21 @@ function HeaderMenu({ onMenuClick }) {
     const menu = (
         <Menu onClick={onMenuClick} className={styles['dropdown-menu']} selectedKeys={selectedKeys}>
             <MenuItem disabled>
-                <Icon type="user" />个人中心
+                <Icon type="user" />
+                个人中心
             </MenuItem>
             <MenuItem disabled>
-                <Icon type="setting" />设置
+                <Icon type="setting" />
+                设置
             </MenuItem>
             <MenuItem key="changeTheme">
-                <Icon type="setting" />切换主题
+                <Icon type="setting" />
+                切换主题
             </MenuItem>
             <MenuDivider />
             <MenuItem key="logout">
-                <Icon type="logout" />退出登录
+                <Icon type="logout" />
+                退出登录
             </MenuItem>
         </Menu>
     );
@@ -38,12 +42,12 @@ export default function GlobalHeader({ logo, isMobile, collapsed, onCollapse, on
     return (
         <div className={styles['app-header']}>
             {isMobile && (
-                <f>
+                <>
                     <Link to="/" className={styles.logo} key="logo">
                         <img src={logo} alt="logo" width="32" />
                     </Link>
                     <Divider type="vertical" key="line" />
-                </f>
+                </>
             )}
             <Icon
                 className={styles.trigger}
