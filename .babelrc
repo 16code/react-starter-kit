@@ -29,15 +29,15 @@
             }
         ]
     ],
-    "ignore": [
-        "react.production.min.js",
-        "react-dom.production.min.js",
-        "react-router-dom.min.js",
-        "redux.min.js",
-        "react-redux.min.js",
-        "redux-thunk.min.js",
-        "antd.min.js",
-        "moment.js",
-        "moment.min.js"
-    ]
+	"env": {
+		"production": {
+			"plugins": [
+				"@babel/transform-react-constant-elements",
+				"@babel/transform-react-inline-elements",
+				"transform-react-remove-prop-types", 
+				"transform-react-pure-class-to-function"
+			]
+		}
+  	},
+    "ignore": ["node_modules", "dist"]
 }
