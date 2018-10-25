@@ -1,49 +1,43 @@
 {
     "presets": [
         [
-            "env",
+            "@babel/preset-env",
             {
                 "targets": {
                     "safari": 10,
                     "firefox": 50,
-                    "chrome": 50
+                    "chrome": 50,
+					"uglify": true
                 },
                 "modules": false,
                 "debug": false
             }
         ],
-        "react"
+        "@babel/preset-react"
     ],
-    "env": {
-		"development": {
-			"plugins": [ "react-hot-loader/babel" ]
-		},
-        "production": {
-            "presets": ["react-optimize"]
-        }
-    },
     "plugins": [
-		"transform-runtime",
-        "transform-decorators-legacy",
-        "transform-object-rest-spread",
-        "transform-class-properties",
-        "syntax-dynamic-import",
+        "@babel/plugin-transform-runtime",
+        "@babel/plugin-syntax-dynamic-import",
+        "@babel/plugin-proposal-object-rest-spread",
+		["@babel/plugin-proposal-decorators", { "legacy": true }],
+		["@babel/plugin-proposal-class-properties", { "loose" : true }],
         [
             "import",
             {
                 "libraryName": "antd",
-                "style": false
+                "style": true
             }
         ]
     ],
-    "ignore": [
-        "react.production.min.js",
-        "react-dom.production.min.js",
-        "react-router-dom.min.js",
-        "redux.min.js",
-        "react-redux.min.js",
-        "redux-thunk.min.js",
-        "antd.min.js",
-        "moment.min.js"
-    ]
+	"env": {
+		"production": {
+			"plugins": [
+				"@babel/transform-react-constant-elements",
+				"@babel/transform-react-inline-elements",
+				"transform-react-remove-prop-types", 
+				"transform-react-pure-class-to-function"
+			]
+		}
+  	},
+    "ignore": ["node_modules", "dist"]
 }

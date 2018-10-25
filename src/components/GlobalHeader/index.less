@@ -1,0 +1,75 @@
+@import '~styles/variables.less';
+:global(.ant-layout-header) {
+    height: @header-bar-height;
+    line-height: @header-bar-height;
+}
+.app-header {
+    height: @header-bar-height;
+    padding: 0 0.12rem 0 0;
+    background: #fff;
+    box-shadow: 0 1px 10px 1px rgba(115, 108, 203, 0.1);
+    position: relative;
+    user-select: none;
+    .logo {
+        height: @header-bar-height;
+        line-height: 58px;
+        vertical-align: top;
+        display: inline-block;
+        padding: 0 0 0 0.24rem;
+        cursor: pointer;
+        font-size: 0.2rem;
+        img {
+            display: inline-block;
+            vertical-align: middle;
+        }
+    }
+
+    .dropdown-menu {
+        :global(.anticon) {
+            margin-right: 8px;
+        }
+        :global(.ant-dropdown-menu-item) {
+            width: 160px;
+        }
+    }
+
+    i.trigger {
+        font-size: 20px;
+        line-height: @header-bar-height;
+        cursor: pointer;
+        transition: all 0.3s, padding 0s;
+        padding: 0 0.24rem;
+        &:hover {
+            background: @primary-1;
+        }
+    }
+
+    .right {
+        float: right;
+        height: 100%;
+        .action {
+            cursor: pointer;
+            padding: 0 0.12rem;
+            display: inline-block;
+            transition: all 0.3s;
+            height: 100%;
+            > i {
+                font-size: 16px;
+                vertical-align: middle;
+                color: @text-color;
+            }
+            &:hover,
+            &:global(.ant-popover-open) {
+                background: @primary-1;
+            }
+        }
+        .account {
+            .avatar {
+                margin: 0 8px 0 0;
+                color: @primary-color;
+                background: rgba(255, 255, 255, 0.85);
+                vertical-align: middle;
+            }
+        }
+    }
+}

@@ -8,7 +8,9 @@
         "console": true,
         "System": true,
         "asyncComponent": true,
-        "__DEV__": true
+        "classNames": true,
+        "__DEV__": true,
+        "APP_NAME": true
     },
     "env": {
         "es6": true,
@@ -21,6 +23,7 @@
         "sourceType": "module",
         "ecmaFeatures": {
             "experimentalObjectRestSpread": true,
+            "legacyDecorators": true,
             "jsx": true
         }
     },
@@ -249,6 +252,10 @@
         ]
     },
     "settings": {
+        "react": {
+            "pragma": "React",
+            "version": "16.5"
+        },
         "import/resolver": {
             "node": {
                 "extensions": [".js", ".json"]

@@ -1,0 +1,101 @@
+@import '~styles/variables';
+.dynamic-table {
+    background: #fff;
+    border: 1px solid #e9e9e9;
+    border-radius: 2px;
+    clear: both;
+    :global(.ant-table-pagination.ant-pagination) {
+        margin-right: 8px;
+    }
+}
+.dynamic-table-toolbar {
+    padding: 8px;
+    min-height: 48px;
+    border-bottom: 1px solid #e9e9e9;
+    display: flex;
+    flex-wrap: nowrap;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+.dynamic-table-left {
+    display: flex;
+    padding-right: 32px;
+    .col-item {
+        padding: 4px;
+    }
+    :global {
+        .ant-radio-group {
+            white-space: nowrap;
+        }
+        .ant-select,
+        .ant-calendar-picker {
+            width: 100%;
+        }
+    }
+}
+.dynamic-table-right {
+    white-space: nowrap;
+    > button {
+        margin-left: 0.04rem;
+    }
+}
+.dynamic-table-body {
+    clear: both;
+    position: relative;
+    min-height: 3rem;
+    :global(.ant-table-placeholder) {
+        min-height: 3.2rem;
+        line-height: 3.2rem;
+    }
+}
+
+.selection-wrapper {
+    padding-bottom: 48px;
+    position: relative;
+}
+.selection-list {
+    max-height: 330px;
+    overflow: auto;
+}
+.selection-item {
+    width: 180px;
+    padding: 6px 0;
+}
+.selection-actions {
+    position: absolute;
+    padding: 8px 8px 0;
+    background-color: #fff;
+    bottom: 0;
+}
+.without-extra {
+    justify-content: flex-end;
+}
+@media screen and (max-width: @screen-lg) {
+    .dynamic-table-toolbar {
+        flex-direction: column;
+        align-items: unset;
+    }
+    .dynamic-table-right {
+        display: none;
+    }
+    .without-extra .dynamic-table-right {
+        display: flex;
+        justify-content: flex-end;
+    }
+    .dynamic-table-left {
+        padding-right: 0;
+        flex-direction: row;
+        .col-item {
+            width: 50%;
+        }
+    }
+}
+@media screen and (max-width: @screen-md) {
+    .dynamic-table-left {
+        flex-direction: column;
+        .col-item {
+            width: 100%;
+        }
+    }
+}

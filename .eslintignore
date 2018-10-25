@@ -10,3 +10,4 @@ typings/*
 .uglifycache/
 .eslintcache/
 ./libs
+webpack.config.js

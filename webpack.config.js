@@ -1,7 +1,8 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
@@ -11,19 +12,24 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const distPath = path.join(__dirname, 'dist');
 const cachePath = path.join(__dirname, '.cache');
 const srcPath = path.join(__dirname, 'src');
+const publicPath = path.join(__dirname, 'public');
 const stylePath = path.join(__dirname, 'src/styles');
 const isDev = process.env.NODE_ENV === 'development';
 const port = process.env.PORT || 8181;
 
 const filesNameMapper = {
-    filename: isDev ? '[name].js' : 'assets/vendor/[name].[chunkhash:5].js',
+    filename: isDev ? '[name].js' : 'assets/js/[name].[chunkhash:5].js',
     chunkFilename: isDev ? '[name].chunk.js' : 'assets/js/[name].[chunkhash:5].chunk.js',
-    cssFilename: isDev ? '[name].css' : 'assets/vendor/[name].[chunkhash:5].css',
+    cssFilename: isDev ? '[name].css' : 'assets/css/[name].[chunkhash:5].css',
+    cssChunkFilename: isDev ? '[id].css' : 'assets/css/[name].[chunkhash:5].css',
     imgFilename: 'assets/images/[name].[hash:5].[ext]',
     fontFilename: 'assets/fonts/[name].[ext]?[hash:5]'
 };
 const plugins = [
-    new webpack.DefinePlugin({ __DEV__: isDev }),
+    new webpack.DefinePlugin({
+        __DEV__: isDev,
+        APP_NAME: '"后台管理系统"'
+    }),
     new HtmlWebpackPlugin({
         template: './public/index.html',
         favicon: './public/favicon.ico',
@@ -42,13 +48,13 @@ const plugins = [
     new webpack.ProvidePlugin({
         React: 'react',
         ReactDOM: 'react-dom',
+        moment: 'moment',
+        classNames: 'classnames',
         asyncComponent: ['AsyncComponent', 'default']
     }),
-    new ExtractTextPlugin({
+    new MiniCssExtractPlugin({
         filename: filesNameMapper.cssFilename,
-        allChunks: true,
-        disable: isDev && true,
-        ignoreOrder: true
+        chunkFilename: filesNameMapper.cssChunkFilename
     }),
     new webpack.ContextReplacementPlugin(/moment[/\\]locale$/, /zh-cn/)
 ];
@@ -81,14 +87,14 @@ const productionPlugins = [
         }
     }),
     new CompressionPlugin({
-        asset: '[path].gz[query]',
-        algorithm: 'gzip',
         test: /\.js$|\.css$|\.html$|\.eot?.+$|\.ttf?.+$|\.woff?.+$|\.svg?.+$/,
-        threshold: 10240,
-        minRatio: 0.8
+        threshold: 10240
     })
 ];
-
+const entry = {
+    vendors: ['./src/vendors.js'],
+    app: ['./src/index.jsx', './src/styles/index.less']
+};
 module.exports = function config() {
     if (isDev) {
         plugins.push(
@@ -100,15 +106,13 @@ module.exports = function config() {
                 })
             ]
         );
+        entry.app.unshift('react-hot-loader/patch');
     } else {
         plugins.push(...productionPlugins);
     }
     return {
         mode: isDev ? 'development' : 'production',
-        entry: {
-            vendors: ['./src/vendors.js'],
-            app: ['./src/index.jsx']
-        },
+        entry,
         output: {
             path: distPath,
             filename: filesNameMapper.filename,
@@ -140,12 +144,10 @@ module.exports = function config() {
             alias: {
                 react: isDev ? 'react' : nodeModulesPath('/react/umd/react.production.min.js'),
                 'react-dom': isDev ? 'react-dom' : nodeModulesPath('/react-dom/umd/react-dom.production.min.js'),
-                'react-router-dom': isDev
-                    ? 'react-router-dom'
-                    : nodeModulesPath('/react-router-dom/umd/react-router-dom.min.js'),
                 redux: nodeModulesPath('/redux/dist/redux.min.js'),
                 'react-redux': nodeModulesPath('/react-redux/dist/react-redux.min.js'),
-                src: path.join(__dirname, 'src'),
+                '@': path.join(__dirname, 'src'),
+                i18n: path.join(__dirname, 'src/i18n'),
                 components: path.join(__dirname, 'src/components'),
                 containers: path.join(__dirname, 'src/containers'),
                 layouts: path.join(__dirname, 'src/layouts'),
@@ -155,6 +157,9 @@ module.exports = function config() {
                 services: path.join(__dirname, 'src/services'),
                 utils: path.join(__dirname, 'src/utils'),
                 styles: path.join(__dirname, 'src/styles'),
+                sagas: path.join(__dirname, 'src/sagas'),
+                store: path.join(__dirname, 'src/store'),
+                public: path.join(__dirname, 'public'),
                 AsyncComponent: path.join(__dirname, 'src/components/AsyncComponent.jsx')
             }
         },
@@ -187,24 +192,32 @@ module.exports = function config() {
                     ]
                 },
                 {
-                    test: /\.css$/,
+                    test: /.css$/,
                     include: srcPath,
-                    use: ExtractTextPlugin.extract(styleLoaderConfig())
+                    use: styleLoaderConfig()
+                },
+                {
+                    test: /\.(css|less)$/,
+                    include: /(node_modules)/,
+                    exclude: srcPath,
+                    use: styleLoaderConfig()
                 },
                 {
                     test: /\.less$/,
                     include: stylePath,
-                    use: ExtractTextPlugin.extract(styleLoaderConfig({ useCssModule: false })),
+                    use: styleLoaderConfig({ useCssModule: false }),
                     exclude: /(node_modules)/
                 },
                 {
                     test: /\.less$/,
-                    include: /(src\/pages|src\/components|src\/containers)/,
-                    use: ExtractTextPlugin.extract(styleLoaderConfig({ useCssModule: true })),
+                    include: /(src\/pages|src\/components|src\/containers|src\/layouts)/,
+                    use: styleLoaderConfig({ useCssModule: true }),
                     exclude: /(node_modules)/
                 },
                 {
-                    test: /\.(woff|woff2|ttf|eot)(\?]?.*)?$/,
+                    test: /\.(woff|woff2|ttf|eot|svg)(\?]?.*)?$/,
+                    include: publicPath,
+                    exclude: srcPath,
                     use: [
                         {
                             loader: 'url-loader',
@@ -229,15 +242,15 @@ module.exports = function config() {
             moduleExtensions: ['-loader']
         },
         externals: {
-            moment: true
+            moment: false
         },
         plugins,
         optimization: {
-            occurrenceOrder: true,
+            occurrenceOrder: false,
             splitChunks: {
                 cacheGroups: {
                     vendors: {
-                        test: /(vendors|babel-runtime|core-js|react-router-dom)/,
+                        test: /(vendors|babel-runtime|core-js|react-router-dom|moment)/,
                         priority: 10,
                         enforce: true,
                         name: 'vendors',
@@ -246,6 +259,16 @@ module.exports = function config() {
                         minSize: 0,
                         reuseExistingChunk: true
                     }
+                    // antd: {
+                    //     test: /(antd|create-react-class|async-validator|rc-)/,
+                    //     priority: 10,
+                    //     enforce: true,
+                    //     name: 'antd',
+                    //     chunks: 'all',
+                    //     minChunks: 1,
+                    //     minSize: 0,
+                    //     reuseExistingChunk: true
+                    // }
                 }
             }
         },
@@ -259,47 +282,48 @@ module.exports = function config() {
 };
 
 function styleLoaderConfig(options = {}) {
-    const { useCssModule } = options;
-    return {
-        fallback: 'style-loader',
-        use: [
-            {
-                loader: 'cache-loader',
-                options: {
-                    cacheDirectory: path.join(cachePath, 'csscache')
-                }
-            },
-            {
-                loader: 'css-loader',
-                options: {
-                    importLoaders: 2,
-                    modules: useCssModule && useCssModule,
-                    localIdentName: '[local]--[hash:base64:4]'
-                }
-            },
-            {
-                loader: 'postcss-loader',
-                options: {
-                    config: {
-                        path: path.join(__dirname, 'postcss.config.js'),
-                        ctx: {
-                            autoprefixer: {
-                                browsers: ['Safari >= 10', 'last 1 firefox version', 'Chrome >= 62', 'Explorer >= 10']
-                            },
-                            cssnano: { preset: 'default' },
-                            cssVariables: {}
-                        }
+    const useCssModule = options.useCssModule || false;
+    return [
+        isDev ? 'style-loader' : MiniCssExtractPlugin.loader,
+        {
+            loader: 'cache-loader',
+            options: {
+                cacheDirectory: path.join(cachePath, 'csscache')
+            }
+        },
+        {
+            loader: 'css-loader',
+            options: {
+                importLoaders: 2,
+                modules: useCssModule,
+                localIdentName: '[local]--[hash:base64:4]'
+            }
+        },
+        {
+            loader: 'postcss-loader',
+            options: {
+                config: {
+                    path: path.join(__dirname, 'postcss.config.js'),
+                    ctx: {
+                        autoprefixer: {
+                            browsers: ['Safari >= 10', 'last 1 firefox version', 'Chrome >= 62', 'Explorer >= 10']
+                        },
+                        cssnano: { preset: 'default' },
+                        cssVariables: {}
                     }
                 }
-            },
-            {
-                loader: 'less-loader',
-                options: {
-                    javascriptEnabled: true
+            }
+        },
+        {
+            loader: 'less-loader',
+            options: {
+                javascriptEnabled: true,
+                modifyVars: {
+                    '@icon-url': '"../../../../../public/fonts/iconfont"'
                 }
             }
-        ]
-    };
+        }
+    ];
 }
 
 function nodeModulesPath(filePath) {
