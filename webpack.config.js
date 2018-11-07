@@ -143,7 +143,6 @@ module.exports = function config() {
             modules: ['node_modules', srcPath],
             alias: {
                 react: isDev ? 'react' : nodeModulesPath('/react/umd/react.production.min.js'),
-                'react-dom': isDev ? 'react-dom' : nodeModulesPath('/react-dom/umd/react-dom.production.min.js'),
                 redux: nodeModulesPath('/redux/dist/redux.min.js'),
                 'react-redux': nodeModulesPath('/react-redux/dist/react-redux.min.js'),
                 '@': path.join(__dirname, 'src'),

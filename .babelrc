@@ -3,12 +3,6 @@
         [
             "@babel/preset-env",
             {
-                "targets": {
-                    "safari": 10,
-                    "firefox": 50,
-                    "chrome": 50,
-					"uglify": true
-                },
                 "modules": false,
                 "debug": false
             }
