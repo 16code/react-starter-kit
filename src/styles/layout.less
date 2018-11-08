@@ -18,14 +18,11 @@
         }
         .login-form {
             background: rgba(255, 255, 255, 0.88);
-            padding: 0.48rem 0.32rem;
+            padding: 0.32rem;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
             position: relative;
             z-index: 2;
-            &-button {
-                width: 100%;
-            }
             &-forgot {
                 float: right;
                 color: var(--text-color-secondary);
@@ -41,10 +38,10 @@
                 color: var(--text-color);
             }
         }
-        .ant-form-horizontal {
-            .ant-form-item:last-child {
-                margin-bottom: 0;
-            }
+        .form-box {
+            width: 100%;
+            max-width: 360px;
+            margin: auto;
         }
     }
 }
