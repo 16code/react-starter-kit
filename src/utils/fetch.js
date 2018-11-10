@@ -38,7 +38,12 @@ fetchIntercept.register({
         if (POST_HTTP_METHODS.includes(method.toUpperCase()) && body) {
             config.body = headers['Content-Type'].includes('urlencoded')
                 ? (config.body = objToUrlParams(body))
-                : JSON.stringify(body);
+                : config.body instanceof FormData
+                    ? config.body
+                    : JSON.stringify(body);
+        }
+        if (config.body instanceof FormData) {
+            delete headers['Content-Type'];
         }
         if (params) {
             url = `${url}?${objToUrlParams(params)}`;

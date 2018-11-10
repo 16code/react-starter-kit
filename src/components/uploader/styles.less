@@ -1,0 +1,131 @@
+.uploader {
+    display: block;
+    overflow: hidden;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    input[type='file'] {
+        position: absolute;
+        left: -99999rem;
+        top: -9999rem;
+    }
+    small {
+        display: inline-block;
+        margin-bottom: 10px;
+    }
+    .browse-btn {
+        cursor: pointer;
+        background: #5b7bfe;
+        padding: 10px 0;
+        border: 1px solid #5b7bfe;
+        border-radius: 3px;
+        color: #fff;
+        line-height: 1;
+        outline: none;
+        transition: all 0.3s;
+        width: 120px;
+        margin: auto;
+        &:not([disabled]):hover {
+            background-color: darken(#5b7bfe, 5%);
+            border-color: darken(#5b7bfe, 5%);
+        }
+        &:disabled {
+            background-color: lighten(#5b7bfe, 5%);
+            border-color: lighten(#5b7bfe, 5%);
+            cursor: not-allowed;
+        }
+    }
+    .upload-icon {
+        background-image: url('./cloud-icon.svg');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: 40px 40px;
+        display: block;
+        margin: auto;
+        width: 40px;
+        height: 40px;
+    }
+    .drag-box {
+        width: 100%;
+        outline: 2px dashed #5b7bfe;
+        position: relative;
+        display: grid;
+        grid-gap: 10px;
+        justify-content: center;
+        text-align: center;
+        padding: 40px;
+        > * {
+            margin-bottom: 0;
+        }
+        .help {
+            color: #999;
+            font-size: 13px;
+        }
+    }
+    .scroll-tips {
+        height: 19px;
+        line-height: 19px;
+        overflow: hidden;
+        color: #555;
+        > span {
+            display: block;
+            transition: all 0.2s;
+            transform: translate3d(0, 0, 0);
+        }
+    }
+    :global(.drag-enter) {
+        &.drag-box {
+            outline-color: orange;
+        }
+        .scroll-tips > span {
+            transform: translate3d(0, -19px, 0);
+        }
+    }
+}
+.files-list {
+    list-style: none;
+    margin-top: 20px;
+    padding: 0;
+    display: grid;
+    grid-gap: 10px;
+    li {
+        display: grid;
+        grid-template-columns: 48px auto 50px;
+        grid-gap: 10px;
+        align-items: center;
+        padding: 10px;
+        border: 1px solid #eee;
+    }
+    .name {
+        font-size: 15px;
+        color: #333;
+    }
+    .thumb {
+        background-color: rgba(222, 222, 222, 0.6);
+        width: 48px;
+        min-height: 48px;
+        max-height: 64px;
+        border-radius: 5px;
+        display: grid;
+        align-items: center;
+        overflow: hidden;
+        > img {
+            max-width: 100%;
+        }
+    }
+    .info {
+        display: grid;
+    }
+}
+
+.accept-tips {
+    &[data-type='normal'] {
+        color: inherit;
+    }
+    &[data-type='warn'] {
+        color: orange;
+    }
+    &[data-type='error'] {
+        color: red;
+    }
+}
